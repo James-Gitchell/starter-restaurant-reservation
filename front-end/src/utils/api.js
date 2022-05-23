@@ -7,7 +7,7 @@ import formatReservationTime from "./format-reservation-date";
 
 //get API url from environment
 const API_BASE_URL =
-  process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
+  process.env.REACT_APP_API_BASE_URL || "http://localhost:5001  ";
 
 /**
  * Defines the default headers for these functions to work with `json-server`
@@ -68,3 +68,82 @@ export async function listReservations(params, signal) {
     .then(formatReservationDate)
     .then(formatReservationTime);
 }
+
+export async function createReservation(data, signal) {
+  const url = `${API_BASE_URL}/reservations`;
+  const payload = {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ data }),
+    signal,
+  };
+  return await fetchJson(url,payload);
+};
+
+
+export async function readReservation(params, signal) {
+  const url = `${API_BASE_URL}/reservations/${params}`;
+  const payload = {
+    method: "GET",
+    headers,
+    signal
+  };
+  return await fetchJson(url,payload,[]);
+}
+
+export async function updateReservation(params, data, signal) {
+  const url = `${API_BASE_URL}/reservations/${params}`;
+  const payload = {
+    method: "PUT",
+    body: JSON.stringify({ data }),
+    headers,
+    signal
+  };
+  return await fetchJson(url,payload,[]);
+}
+
+export async function createTable(data, signal) {
+  
+  const url = `${API_BASE_URL}/tables`
+  const payload = {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ data }),
+    signal
+  };
+
+  return await fetchJson(url, payload);
+};
+
+export async function listTables(signal){
+  const url = `${API_BASE_URL}/tables`;
+  const payload = {
+    method: "GET",
+    headers,
+    signal
+  };
+
+  return await fetchJson(url,payload,[]);
+};
+
+export async function seatTable(tableId,data,signal){
+
+  const url = `${API_BASE_URL}/tables/${tableId}/seat`;
+  const payload = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ data }),
+    signal
+  };
+  return await fetchJson(url,payload,[]);
+};
+
+export async function delTblSeat(tableId, signal){
+  const url = `${API_BASE_URL}/tables/${tableId}/seat`;
+  const payload = {
+    method: "DELETE",
+    headers,
+    signal
+  };
+  return await fetchJson(url,payload,[])
+};
